@@ -1,0 +1,93 @@
+1️⃣ Single Responsibility Principle (SRP) – Score : 4/5
+
+Définition : Une classe doit avoir une seule raison de changer.
+
+État : Partiellement respecté
+
+Violation détectée :
+La classe GestionnaireEmploiDuTemps a deux responsabilités :
+
+Gérer la liste des cours (ajout, modification, suppression)
+
+Notifier les observateurs (pattern Observer)
+
+public class GestionnaireEmploiDuTemps implements Subject {
+    private List<ICours> listeCours;      // Responsabilité 1
+    private List<Observer> observers;     // Responsabilité 2
+}
+
+Conséquence : Si on change la gestion des cours ou la notification, il faut modifier cette classe → violation mineure du SRP, acceptable pour un TP académique.
+
+2️⃣ Open/Closed Principle (OCP) – Score : 5/5
+
+Définition : Les classes doivent être ouvertes à l’extension mais fermées à la modification.
+
+État : Respecté
+
+Preuve :
+On peut ajouter un nouveau décorateur sans modifier le code existant :
+public class CoursHybride extends CoursDecorator {
+    public CoursHybride(ICours cours) {
+        super(cours);
+    }
+    
+    @Override
+    public String getDescription() {
+        return coursDecorated.getDescription() + " (Hybride)";
+    }
+}
+
+3️⃣ Liskov Substitution Principle (LSP) – Score : 5/5
+
+Définition : Les objets d’une classe dérivée doivent pouvoir remplacer les objets de la classe de base sans altérer le comportement.
+
+État : Respecté
+
+Preuve :
+ICours cours1 = new Cours(...);
+ICours cours2 = new CoursEnLigne(cours1);
+ICours cours3 = new CoursEnAnglais(cours1);
+
+afficherCours(cours1);
+afficherCours(cours2);
+afficherCours(cours3);
+4️⃣ Interface Segregation Principle (ISP) – Score : 5/5
+
+Définition : Les clients ne doivent pas dépendre d’interfaces qu’ils n’utilisent pas.
+
+État : Respecté
+
+Preuve :
+public interface Observer {
+    void update(String message);
+}
+
+public interface Subject {
+    void attach(Observer o);
+    void detach(Observer o);
+    void notifyObservers(String message);
+}
+
+public interface ICours {
+    String getDescription();
+    double getDuree();
+}
+5️⃣ Dependency Inversion Principle (DIP) – Score : 5/5
+
+Définition : Dépendre d’abstractions plutôt que de classes concrètes.
+
+État : Respecté
+
+Preuve :
+public class GestionnaireEmploiDuTemps implements Subject {
+    private List<Observer> observers;    // Dépend de l’interface, pas de la classe concrète
+    private List<ICours> listeCours;     // Dépend de l’interface, pas de Cours
+}
+
+public abstract class CoursDecorator implements ICours {
+    protected ICours coursDecorated;     // Dépend de l’interface ICours
+}
+
+
+
+

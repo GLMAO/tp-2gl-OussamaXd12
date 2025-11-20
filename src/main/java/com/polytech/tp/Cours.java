@@ -1,7 +1,7 @@
 package com.polytech.tp;
 
 public class Cours implements ICours {
-    private String matiere;
+    private  String matiere;
     private String enseignant;
     private String salle;
     private String date;
@@ -32,8 +32,18 @@ public class Cours implements ICours {
     public double getDuree() {
         return 1.5; 
     }
-    
-    
     public String getMatiere() { return matiere; }
     public String getEnseignant() { return enseignant; }
+    public String getSalle() { return salle; }
+    public String getDate() { return date; }
+    public String getHeureDebut() { return heureDebut; }
+    public boolean isEstOptionnel() { return estOptionnel; }
+    public String getNiveau() { return niveau; }
+    public boolean isNecessiteProjecteur() { return necessiteProjecteur; }
+
+    public static CoursBuilder builder() {
+        return new CoursBuilder();
+    }
+  
+    
 }
